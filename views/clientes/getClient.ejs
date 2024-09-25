@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Clientes</title>
+    <style>
+      .filtro{
+        display: none;
+      }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-primary">
+        <div class="container-fluid">
+          <a class="navbar-brand text-light" href="#">Menu</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/home">Principal</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Opciones</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link disabled" aria-disabled="true">En Construccion</a>
+              </li>
+            </ul>
+            <form action="" method="" class="d-flex" id="buscador" role="search">
+              <input class="form-control me-2" type="text" placeholder="Search" aria-label="Search" id="buscar" name="buscar">
+            </form>
+          </div>
+       </div>
+     </nav>
+     <div class="container">
+      <button type="button" class="btn btn-outline-primary mt-4" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <i class='bx bxs-plus-circle bx-md'></i>
+      </button>
+      
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Agregar Cliente</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form id="agregar-cliente" action="/save" method="post">
+                <div class="mb-3">
+                  <label for="dni" class="form-label">DNI:</label>
+                  <input type="text" name="dni" id="dni" class="form-control" tabindex="1" required placeholder="Ingrese el Rif o Cedúla">
+                </div>
+                <div class="mb-3">
+                  <label for="nombre" class="form-label">Nombre:</label>
+                  <input type="text" name="nombre" id="nombre" class="form-control" required tabindex="1">
+                </div>
+                <div class="mb-3">
+                    <label for="direccion" class="form-label">Dirección:</label>
+                    <input type="text" name="direccion" id="direccion" class="form-control" required tabindex="2">
+                </div>
+                <div class="mb-3">
+                  <label for="telefono" class="form-label">Teléfono:</label>
+                  <input type="text" name="telefono" id="telefono" class="form-control" required tabindex="3">
+                </div>
+                <div class="mb-3">
+                  <label for="email" class="form-label">E-mail:</label>
+                  <input type="email" name="email" id="email" class="form-control" required tabindex="3">
+                </div>
+                  <input type="text" name="url" id="url" class="form-control" tabindex="3" value="<%= url %>" hidden>
+              </div>
+              <div class="modal-footer">
+                <button id="reload" class="btn btn-primary">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="table-responsive">
+      <table class="table table_responsive table-bordered table_striped text-center mt-4">
+          <thead>
+              <tr class="bg-primary text-white">
+                  <th>ID</th>
+                  <th>DNI</th>
+                  <th>NOMBRE</th>
+                  <th>DIRECIÓN</th>
+                  <th>TELÉFONO</th>
+                  <th>CORREO</th>
+                  <th>ACCIONES</th>
+              </tr>
+          </thead>
+          <tbody>
+            <% results.rows.forEach((cliente)=> { %>
+              <tr class="resultado">
+                  <td><%= cliente.cliente_id %></td>
+                  <td><%= cliente.dni %></td>
+                  <td><%= cliente.nombre %></td>
+                  <td><%= cliente.direccion %></td>
+                  <td><%= cliente.telefono %></td>
+                  <td><%= cliente.email %></td>
+                  <td>
+                      <a href="/edit/<%= cliente.cliente_id %>" class="btn btn-outline-info">Editar</a>
+                      <a type="button" class="btn btn-danger" href="/delete/<%= cliente.cliente_id %>">Borrar</a>
+                  </td>
+              </tr>
+            <% }) %>
+        </tbody>
+    </table>
+    </div>
+</div>
+<script>
+  console.log("conectado")
+  document.addEventListener("keyup",e=>{
+    if(e.target.matches("#buscar")){
+      document.querySelectorAll(".resultado").forEach(resultado=>{
+
+        resultado.textContent.toLowerCase().includes(e.target.value.toLowerCase())
+          ? resultado.classList.remove("filtro") 
+          : resultado.classList.add("filtro")
+      })
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+</body>
+</html>
+

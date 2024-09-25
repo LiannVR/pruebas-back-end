@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Clientes</title>
+    <style>
+      .filtro{
+        display: none;
+      }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<% function fechaActual() {
+  const fechaActual = new Date();
+  const año = fechaActual.getFullYear();
+  const mes = fechaActual.getMonth() + 1; // Los meses en JavaScript van de 0 a 11, por lo que hay que sumar 1
+  const dia = fechaActual.getDate();
+
+  const fechaFormateada = `${año}-${mes.toString().padStart(2, '0')}-${dia.toString().padStart(2, '0')}`;
+
+  return fechaFormateada;
+}
+%>
+<% fechaAct = fechaActual() %>
+  
+  <body>
+    <nav class="navbar navbar-expand-lg bg-primary">
+        <div class="container-fluid">
+          <a class="navbar-brand text-light" href="#">Menu</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/home">Principal</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Opciones</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link disabled" aria-disabled="true">En Construccion</a>
+              </li>
+            </ul>
+          </div>
+       </div>
+     </nav>
+<div class="container">
+      <!-- Button trigger modal -->
+<div class="row mt-4 ms-1">
+
+<button type="button" class="btn btn-outline-primary mt-4 col-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  <i class='bx bxs-plus-circle bx-md'></i>
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Agregar Cliente</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="agregar-cliente" action="/save" method="post">
+          <div class="mb-3">
+            <label for="dni" class="form-label">DNI:</label>
+            <input type="text" name="dni" id="dni" class="form-control" tabindex="1" required placeholder="Ingrese el Rif o Cedúla">
+          </div>
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre:</label>
+            <input type="text" name="nombre" id="nombre" class="form-control" required tabindex="1">
+          </div>
+          <div class="mb-3">
+              <label for="direccion" class="form-label">Dirección:</label>
+              <input type="text" name="direccion" id="direccion" class="form-control" required tabindex="2">
+          </div>
+          <div class="mb-3">
+            <label for="telefono" class="form-label">Teléfono:</label>
+            <input type="text" name="telefono" id="telefono" class="form-control" required tabindex="3">
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">E-mail:</label>
+            <input type="email" name="email" id="email" class="form-control" required tabindex="3">
+          </div>
+            <input type="text" name="url" id="url" class="form-control" tabindex="3" value="<%= url %>" hidden>
+        </div>
+        <div class="modal-footer">
+          <button id="reload" class="btn btn-primary">Guardar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+<form action="" method="" class="d-flex mt-4 col-10" id="buscador" role="search">
+  <input class="form-control me-2" type="text" placeholder="Search" aria-label="Search" id="buscar" name="buscar">
+</form>
+</div>
+      <div class="table-responsive border border-primary mt-4" style="height: 100px;">
+        <table class="table table_responsive table-bordered table_striped text-center mt-4 p-3">
+            <thead>
+                <tr class="bg-primary text-white">
+                    <th>DNI</th>
+                    <th>ClIENTE</th>
+                    <th>ASOCIAR</th>
+                </tr>
+            </thead>
+            <tbody>
+              <% results.rows.forEach((cliente)=> { %>
+                <tr class="resultado">
+
+                    <td><%= cliente.dni %></td>
+                    <td><%= cliente.nombre %></td>
+                    <td><button onclick="obtenerValorBoton(this)" data-array='["<%= cliente.cliente_id %>","<%= cliente.nombre %>"]' ><box-icon type='solid' name='add-to-queue'></box-icon></button></td>
+                </tr>
+              <% }) %>
+          </tbody>
+      </table>
+</div>
+<div class="card border-secondary mt-4">
+  <div class="card-header bg-primary text-light">Nuevo registro</div>
+    <div class="card-body">
+  <form action="/save_mov" method="post">
+    <div class="mb-3">
+      <label for="nombre_cli" class="form-label">FECHA ACTUAL: <div><%= fechaAct %></div></label>
+    </div>
+    <div class="mb-3">
+      <label for="nombre_cli" class="form-label">CLIENTE:</label>
+      <input type="text" disabled required name="nombre_cli" id="nombre_cli" class="form-control" tabindex="1" placeholder="identificador del cliente">
+    </div>
+    <div class="mb-3">
+      <input type="text" hidden required name="cliente_id" id="cliente_id" class="form-control" tabindex="2" placeholder="identificador del cliente">
+    </div>
+    <div class="mb-3">
+      <label for="tipo_movimiento_id" class="form-label" title="Cargo: llevan cilindros\Descargo: dejan cilindros">TIPO DE MOVIMIENTO: <i class='bx bx-info-circle'></i></label>
+      <select name="tipo_movimiento_id" id="tipo_movimiento_id" class="form-select" title="Cargo: llevan cilindros\Descargo: dejan cilindros">
+        <% tipo_mov.rows.forEach((tipo_movimiento)=> { %>
+            <option value="<%= tipo_movimiento.tipo_movimiento_id %>"><%= tipo_movimiento.nombre_tipo_movimiento %></option>
+        <% }) %>
+      </select>
+  </div>
+    <div class="mb-3">
+      <label for="chofer_id" class="form-label">CHOFER:</label>
+      <select name="chofer_id" id="chofer_id" class="form-select">
+          <option value="4">Sin chofer</option>
+        <% choferes.rows.forEach((chofer)=> { %>
+            <option value="<%= chofer.chofer_id %>"><%= chofer.nombre %></option>
+        <% }) %>
+      </select>
+      <input type="text" hidden name="estatus" id="estatus" class="form-control" tabindex="2" value="A">
+  </div>
+  <div class="mb-3">
+    <label for="descripcion" class="form-label">DESCRIPCCIÓN:</label>
+    <textarea type="text-area" name="descripcion" id="descripcion" class="form-control" tabindex="3"></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary" tabindex="4">Guardar</button>
+  <a href="/movimientos" class="btn btn-secondary">Cancelar</a>
+  </form>
+</div>
+</div>
+</div>
+</div>
+<script>
+  console.log(url)
+  document.addEventListener("keyup",e=>{
+    if(e.target.matches("#buscar")){
+      document.querySelectorAll(".resultado").forEach(cliente=>{
+
+        cliente.textContent.toLowerCase().includes(e.target.value.toLowerCase())
+          ? cliente.classList.remove("filtro") 
+          : cliente.classList.add("filtro")
+      })
+    }
+  })
+
+  function obtenerValorBoton(boton) {
+    const valorBoton = JSON.parse(boton.dataset.array);
+    console.log(valorBoton);
+    cliente_id=document.getElementById('cliente_id');
+    nombre=document.getElementById('nombre_cli');
+    nombre.value=valorBoton[1];
+    cliente_id.value=valorBoton[0];
+  }
+  
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+</body>
+</html>
+

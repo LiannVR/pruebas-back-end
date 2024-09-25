@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Registrar Cilindros</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-primary">
+        <div class="container-fluid">
+          <a class="navbar-brand text-light" href="#">Menu</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/home">Principal</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Opciones</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link disabled" aria-disabled="true">En Construccion</a>
+              </li>
+            </ul>
+            <form class="d-flex" role="search">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success" type="submit">Buscar</button>
+            </form>
+          </div>
+       </div>
+     </nav>
+     <div class="container mt-4">
+        <div class="card border-secondary">
+          <div class="card-header bg-primary text-light">Nuevo registro</div>
+            <div class="card-body">
+              <form action="/save_cil" method="post">
+                <div class="mb-3">
+                  <label for="serial"  class="form-label">SERIAL:</label>
+                  <input type="text" required name="serial" id="serial" class="form-control" tabindex="1" placeholder="Ingrese el Serial">
+                </div>
+                <div class="mb-3">
+                  <label for="hidrostatica" class="form-label">HIDROSTATICA:</label>
+                  <input type="date" required name="hidrostatica" id="hidrostatica" class="form-control" tabindex="1">
+                </div>
+                <div class="mb-3">
+                    <label for="propiedad" class="form-label">PROPIEDAD:</label>
+                    <select class="form-select" required name="propiedad" id="propiedad">
+                      <option disabled selected value="">Seleciona una acción</option>
+                      <option value="P">Particular</option>
+                      <option value="E">Empresa</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                  <label for="marca" class="form-label">Marca:</label>
+                  <input type="text" required name="marca" id="marca" class="form-control" tabindex="3">
+                </div>
+                <div class="mb-3">
+                  <label for="tipo_gas_id" class="form-label">TIPO DE GAS:</label>
+                  <select name="tipo_gas_id" required id="tipo_gas_id" class="form-select">
+                    <option disabled selected value="">Seleciona una acción</option>
+                    <% tiposdegas.rows.forEach((tipo_gas)=> { %>
+                        <option value="<%= tipo_gas.tipo_gas_id %>"><%= tipo_gas.nombre_gas %></option>
+                    <% }) %>
+                  </select>
+                </div>
+                <div class="mb-3">
+                    <label for="capacidad" class="form-label">CAPACIDAD:</label>
+                    <input type="text" required name="capacidad" id="capacidad" class="form-control" tabindex="3">
+                </div>
+                <div class="mb-3">
+                    <label for="estado" class="form-label">ESTADO:</label>
+                    <select name="estado" required class="form-select" id="estado">
+                        <option disabled selected value="">Seleciona una acción</option>
+                        <option value="Execelente">Execelente</option>
+                        <option value="Bueno">Bueno</option>
+                        <option value="Malo">Malo</option>
+                        <option value="Por Pintar">Por Pintar</option>
+                        <option value="Dañado">Dañado</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                  <label for="cliente_id" class="form-label">CLIENTES:</label>
+                  <select name="cliente_id" required id="cliente_id" class="form-select">
+                        <option disabled selected value="">Seleciona una acción</option>
+                    <% clientes.rows.forEach((cliente)=> { %>
+                        <option value="<%= cliente.cliente_id %>"><%= cliente.nombre %></option>
+                    <% }) %>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="ubicacion" class="form-label">UBICACIÓN:</label>
+                  <select name="ubicacion" required class="form-select" id="ubicacion">
+                    <option value="En transito">En transito</option>
+                    <option value="Almacen">Almacen</option>
+                </select>
+                </div>
+                <div class="mb-3">
+                  <label for="contenido" class="form-label">CONTENIDO:</label>
+                  <select name="contenido" required class="form-select" id="contenido">
+                      <option value="Vacio">Vacio</option>
+                      <option value="Lleno">Lleno</option>
+                  </select>
+                  <input type="text" hidden name="estatus" id="estatus" value="A">
+                  <input type="text" name="url" id="url" class="form-control" tabindex="3" value="<%= url %>" hidden>
+              </div>
+                <button type="submit" class="btn btn-primary" tabindex="4">Guardar</button>
+                <a href="/cilindros" class="btn btn-secondary">Cancelar</a>
+              </form>
+            </div>
+        </div>        
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+</body>
+</html>

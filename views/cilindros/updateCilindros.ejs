@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Crud</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-primary">
+        <div class="container-fluid">
+          <a class="navbar-brand text-light" href="#">Menu</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/home">Principal</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Opciones</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link disabled" aria-disabled="true">En Construccion</a>
+              </li>
+            </ul>
+            <form class="d-flex" role="search">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success" type="submit">Buscar</button>
+            </form>
+          </div>
+       </div>
+     </nav>
+    <% if(cilindro){ %>
+     <div class="container mt-4">
+        <div class="card border-secondary">
+          <div class="card-header bg-primary text-light">Modificar registro</div>
+            <div class="card-body">
+                <form action="/update_cil" method="post">
+                  <input id="cilindro_id" name="cilindro_id" value="<%= cilindro.cilindro_id %>" hidden>
+                  <input type="text" hidden name="estatus" id="estatus" value="A">
+                  <div class="mb-3">
+                  <label for="dni" class="form-label">SERIAL:</label>
+                  <input type="text" name="serial" id="serial" value="<%= cilindro.serial %>" class="form-control" tabindex="1">
+                  <label for="hidrostatica"  class="form-label">HIDROSTATICA:</label>
+                  <% let date = cilindro.hidrostatica.toISOString();
+                  let fecha = date.slice(0,10);
+                   %>
+                  <input type="date" name="hidrostatica" id="hidrostatica" value="<%= fecha %>" class="form-control" tabindex="1">
+                  <label for="propiedad" class="form-label">PROPIEDAD:</label>
+                  <select name="propiedad" id="propiedad" class="form-select">
+                    <option value="<%= cilindro.propiedad %>" selected ><%= cilindro.propiedad %></option>
+                    <option value="E">Empresa</option>
+                    <option value="P">Personal</option>
+                  </select>
+                  <label for="marca" class="form-label">MARCA:</label>
+                  <input type="text" name="marca" id="marca" value="<%= cilindro.marca %>" class="form-control" tabindex="1">
+                  <label for="tipo_gas_id" class="form-label">TIPO DE GAS:</label>
+                  <input type="text" name="tipo_gas_id" id="tipo_gas_id" value="<%= cilindro.tipo_gas_id %>" class="form-control" tabindex="1">
+                  <label for="capacidad" class="form-label">CAPACIDAD:</label>
+                  <input type="text" name="capacidad" id="capacidad" value="<%= cilindro.capacidad %>" class="form-control" tabindex="1">
+                  <label for="estado" class="form-label">ESTADO:</label>
+                  <select name="estado" id="estada" class="form-select">
+                    <option value="<%= cilindro.estado %>" selected ><%= cilindro.estado %></option>
+                    <option value="Execelente">Execelente</option>
+                    <option value="Bueno">Bueno</option>
+                    <option value="Malo">Malo</option>
+                    <option value="Por Pintar">Por Pintar</option>
+                    <option value="Dañado">Dañado</option>
+                  </select>
+                  <label for="cliente_id" class="form-label">CLIENTES:</label>
+                  <select name="cliente_id" id="cliente_id" class="form-select">
+                        <option selected value="<%= cilindro.cliente_id %>"><%= cilindro.cliente_id %></option>
+                    <% clientes.rows.forEach((cliente)=> { %>
+                        <option value="<%= cliente.cliente_id %>"><%= cliente.nombre %></option>
+                    <% }) %>
+                  </select>
+                  <label for="ubicacion" class="form-label">UBICACIÓN:</label>
+                  <input type="text" name="ubicacion" id="ubicacion" class="form-control" value="<%= cilindro.ubicacion %>" tabindex="3">
+                  <label for="contenido" class="form-label">CONTENIDO:</label>
+                  <select name="contenido" class="form-select" id="contenido">
+                      <option value="<%= cilindro.contenido %>" ><%= cilindro.contenido %></option>
+                      <option value="Vacio">Vacio</option>
+                      <option value="Lleno">Lleno</option>
+                  </select>
+                </div>
+        
+                <button type="submit" class="btn btn-primary" tabindex="5">Guardar</button>
+                <a href="/cilindros" class="btn btn-secondary">Cancelar</a>
+              </form>
+            </div>
+        </div>        
+    </div>
+    <% } %>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+</body>
+</html>
+
+

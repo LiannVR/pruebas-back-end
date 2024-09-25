@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Crud</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-primary">
+        <div class="container-fluid">
+          <a class="navbar-brand text-light" href="#">Menu</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/home">Principal</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Opciones</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link disabled" aria-disabled="true">En Construccion</a>
+              </li>
+            </ul>
+            <form class="d-flex" role="search">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success" type="submit">Buscar</button>
+            </form>
+          </div>
+       </div>
+     </nav>
+    <% if(movimiento){ %>
+     <div class="container mt-4">
+        <div class="card border-secondary">
+          <div class="card-header bg-primary text-light">Modificar registro</div>
+            <div class="card-body">
+                <form action="/update_mov" method="post">
+                  <input id="movimiento_id" name="movimiento_id" value="<%= movimiento.movimiento_id %>" hidden>
+                  <div class="mb-3">
+                  <label for="cliente_id" class="form-label">CLIENTE:</label>
+                  <select name="cliente_id" id="cliente_id" class="form-select">
+                        <option value="<%= movimiento.cliente_id %>" selected><%= movimiento.nombre %></option>
+                    <% clientes.rows.forEach((cliente)=> { %>
+                        <option value="<%= cliente.cliente_id %>"><%= cliente.nombre %></option>
+                    <% }) %>
+                  </select>
+                  <label for="tipo_movimiento_id" class="form-label">TIPO DE MOVIMIENTO:</label>
+                  <select name="tipo_movimiento_id" id="tipo_movimiento_id" class="form-select">
+                    <option value="<%= movimiento.tipo_movimiento_id %>" selected><%= movimiento.tipo_movimiento %></option>
+                    <% tipo_movimiento.rows.forEach((tipo)=> { %>
+                        <option value="<%= tipo.tipo_movimiento_id %>"><%= tipo.nombre_tipo_movimiento %></option>
+                    <% }) %>
+                  </select>
+                  <label for="chofer_id" class="form-label">CHOFER:</label>
+                  <select name="chofer_id" id="chofer_id" class="form-select">
+                    <option value="<%= movimiento.chofer_id %>" selected><%= movimiento.chofer %></option>
+                    <% choferes.rows.forEach((chofer)=> { %>
+                        <option value="<%= chofer.chofer_id %>"><%= chofer.nombre %></option>
+                    <% }) %>
+                  </select>
+                  <label for="fecha_movimiento" class="form-label">FECHA:</label>
+                  <input type="date" name="" id="" disabled value="<%= movimiento.fecha_movimiento.toISOString().slice(0,10) %>" class="form-control" tabindex="1">
+                  <input type="text" name="fecha_movimiento" id="fecha_movimiento" hidden value="<%= movimiento.fecha_movimiento %>" class="form-control" tabindex="1">
+                  <label for="hora_movimiento" class="form-label">HORA:</label>
+                  <input type="text" name="" id="" disabled value="<%= movimiento.hora_movimiento %>" class="form-control" tabindex="1">
+                  <input type="text" name="hora_movimiento" id="hora_movimiento" hidden value="<%= movimiento.hora_movimiento %>" class="form-control" tabindex="1">
+                  <label for="descripcion" class="form-label">DESCRIPCIÓN:</label>
+                  <input type="text" name="descripcion" id="descripcion" value="<%= movimiento.descripcion %>" class="form-control" tabindex="1">
+                </div>
+        
+                <button type="submit" class="btn btn-primary" tabindex="5">Guardar</button>
+                <a href="/movimientos" class="btn btn-secondary">Cancelar</a>
+              </form>
+            </div>
+        </div>        
+    </div>
+    <% } %>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+</body>
+</html>
+
+

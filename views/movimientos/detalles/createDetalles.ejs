@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Regitrar Detalles</title>
+    <style>
+      .filtro{
+        display: none;
+      }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<% function fechaActual() {
+  const fechaActual = new Date();
+  const año = fechaActual.getFullYear();
+  const mes = fechaActual.getMonth() + 1; // Los meses en JavaScript van de 0 a 11, por lo que hay que sumar 1
+  const dia = fechaActual.getDate();
+
+  const fechaFormateada = `${año}-${mes.toString().padStart(2, '0')}-${dia.toString().padStart(2, '0')}`;
+
+  return fechaFormateada;
+}
+%>
+<% fechaAct = fechaActual() %>
+  
+  <body>
+    <nav class="navbar navbar-expand-lg bg-primary">
+        <div class="container-fluid">
+          <a class="navbar-brand text-light" href="#">Menu</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/home">Principal</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Opciones</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link disabled" aria-disabled="true">En Construccion</a>
+              </li>
+            </ul>
+          </div>
+       </div>
+     </nav>
+<div class="container">
+      <!-- Button trigger modal -->
+<div class="row mt-4 ms-1">
+
+<button type="button" class="btn btn-outline-primary mt-4 col-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  <i class='bx bxs-plus-circle bx-md'></i>
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Agregar Cilindro</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="/save_cil" method="post">
+            <div class="mb-3">
+              <label for="serial" class="form-label">SERIAL:</label>
+              <input type="text"required name="serial" id="serial" class="form-control" tabindex="1" placeholder="Ingrese el Serial">
+            </div>
+            <div class="mb-3">
+              <label for="hidrostatica" required class="form-label">HIDROSTATICA:</label>
+              <input type="date" name="hidrostatica" id="hidrostatica" class="form-control" tabindex="1">
+            </div>
+            <div class="mb-3">
+                <label for="propiedad"  class="form-label">PROPIEDAD:</label>
+                <select class="form-select" required name="propiedad" id="propiedad">
+                  <option disabled selected value="">Seleciona una acción</option>
+                  <option value="P">Particular</option>
+                  <option value="E">Empresa</option>
+                </select>
+            </div>
+            <div class="mb-3">
+              <label for="marca" class="form-label">Marca:</label>
+              <input type="text" required name="marca" id="marca" class="form-control" tabindex="3">
+            </div>
+            <div class="mb-3">
+              <label for="tipo_gas_id" class="form-label">TIPO DE GAS:</label>
+              <select name="tipo_gas_id" required id="tipo_gas_id" class="form-select">
+                <option disabled selected value="">Seleciona una acción</option>
+                <% tiposdegas.rows.forEach((tipo_gas)=> { %>
+                    <option value="<%= tipo_gas.tipo_gas_id %>"><%= tipo_gas.nombre_gas %></option>
+                <% }) %>
+              </select>
+            </div>
+            <div class="mb-3">
+                <label for="capacidad" class="form-label">CAPACIDAD:</label>
+                <input type="text" required name="capacidad" id="capacidad" class="form-control" tabindex="3">
+            </div>
+            <div class="mb-3">
+                <label for="estado" class="form-label">ESTADO:</label>
+                <select name="estado" required class="form-select" id="estado">
+                    <option disabled selected value="">Seleciona una acción</option>
+                    <option value="Execelente">Execelente</option>
+                    <option value="Bueno">Bueno</option>
+                    <option value="Malo">Malo</option>
+                    <option value="Por Pintar">Por Pintar</option>
+                    <option value="Dañado">Dañado</option>
+                </select>
+            </div>
+            <div class="mb-3">
+              <label for="cliente_id" class="form-label">CLIENTES:</label>
+              <select name="cliente_id" required id="cliente_id" class="form-select">
+                    <option disabled selected value="">Seleciona una acción</option>
+                <% clientes.rows.forEach((cliente)=> { %>
+                    <option value="<%= cliente.cliente_id %>"><%= cliente.nombre %></option>
+                <% }) %>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="ubicacion" class="form-label">UBICACIÓN:</label>
+              <select name="ubicacion" required class="form-select" id="ubicacion">
+                <option value="En transito">En transito</option>
+                <option value="Almacen">Almacen</option>
+            </select>
+            </div>
+            <div class="mb-3">
+              <label for="contenido" class="form-label">CONTENIDO:</label>
+              <select name="contenido" required class="form-select" id="contenido">
+                  <option value="Vacio">Vacio</option>
+                  <option value="Lleno">Lleno</option>
+              </select>
+              <input type="text" hidden name="estatus" id="estatus" value="A">
+            <input type="text" name="url" id="url" class="form-control" tabindex="3" value="<%= url %>" hidden>
+          </div>
+          <button id="reload" class="btn btn-primary">Guardar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          </form>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+<form action="" method="" class="d-flex mt-4 col-10" id="buscador" role="search">
+  <input class="form-control me-2" type="text" placeholder="Search" aria-label="Search" id="buscar" name="buscar">
+</form>
+</div>
+      <div class="table-responsive border border-primary mt-4" style="height: 100px;">
+        <table class="table table_responsive table-bordered table_striped text-center mt-4 p-3">
+            <thead>
+                <tr class="bg-primary text-white">
+                    <th>SERIAL</th>
+                    <th>CLIENTE</th>
+                    <th>TIPO DE GAS</th>
+                    <th>UBICACIÓN</th>
+                    <th>CONTENIDO</th>
+                    <th>USAR</th>
+                </tr>
+            </thead>
+            <tbody>
+              <% cilindros.rows.forEach((cilindro)=> { %>
+                <tr class="resultado">
+
+                    <td><%= cilindro.serial %></td>
+                    <td><%= cilindro.nombre %></td>
+                    <td><%= cilindro.nombre_gas %></td>
+                    <td><%= cilindro.ubicacion %></td>
+                    <td><%= cilindro.contenido %></td>
+                    <td><button onclick="obtenerValorBoton(this)" data-array='["<%= cilindro.cilindro_id %>","<%= cilindro.serial %>"]' ><box-icon type='solid' name='add-to-queue'></box-icon></button></td>
+                </tr>
+              <% }) %>
+          </tbody>
+      </table>
+</div>
+<div class="mt-4">
+  <p class="fw-bolder">CILINDROS ASOCIADOS:</p>
+</div>
+<div class="table-responsive border border-primary mt-4" style="height: 100px;">
+  <table class="table table_responsive table-bordered table_striped text-center mt-4 p-3">
+      <thead>
+          <tr class="bg-primary text-white">
+              <th>CILINDROS</th>
+          </tr>
+      </thead>
+      <tbody>
+        <% detalles.rows.forEach((detalle)=> { %>
+          <tr class="resultado">
+
+              <td><%= detalle.serial %></td>
+          </tr>
+        <% }) %>
+    </tbody>
+</table>
+</div>
+<div class="card border-secondary mt-4">
+  <div class="card-header bg-primary text-light">Asociar Cilindro</div>
+    <div class="card-body">
+  <form action="/save_del" method="post">
+    <div class="mb-3">
+      <label for="cil_serial" class="form-label">SERIAL:</label>
+      <input type="text" required disabled name="cil_serial" id="cil_serial" class="form-control" tabindex="2" placeholder="serial del cilindro">
+    </div>
+    <div class="mb-3">
+    <label for="cliente" class="form-label">CLIENTE:</label>
+        <select name="cliente" required class="form-select" id="cliente">
+          <option value="" selected disabled hidden>Seleccione una Opción</option>
+          <option value="<%= movimiento.cliente_id %>"><%= movimiento.nombre %></option>
+          <option value="34">Distribuidora NOPE</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="ubicacion" class="form-label">UBICACIÓN:</label>
+        <select name="cil_ubicacion" required class="form-select" id="cil_ubicacion">
+          <option value="" selected disabled hidden>Seleccione una Opción</option>
+          <option value="En transito">En transito</option>
+          <option value="Almacen">Almacen</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="contenido" class="form-label">CONTENIDO:</label>
+        <select name="cil_contenido" required class="form-select" id="cil_contenido">
+          <option value="" selected disabled hidden>Seleccione una Opción</option>
+          <option value="Vacio">Vacio</option>
+          <option value="Lleno">Lleno</option>
+        </select>
+        <input type="text" name="url" id="url" class="form-control" tabindex="3" value="<%= url %>" hidden>
+      </div>
+      <div class="mb-3" hidden >
+        <label for="cil_id" class="form-label">ID CILINDRO:</label>
+        <input type="text" required name="cil_id" id="cil_id" class="form-control" tabindex="1">
+      </div>
+      <div class="mb-3" hidden>
+        <label for="id" class="form-label">ID:</label>
+        <input type="text" name="id" id="id" class="form-control" value="<%= id %>" tabindex="1">
+      </div>
+      <button type="submit" class="btn btn-primary" tabindex="4">Guardar</button>
+  <a href="/movimientos" class="btn btn-secondary">Cancelar</a>
+  </form>
+</div>
+</div>
+</div>
+</div>
+<script>
+  const buscar = document.getElementById('buscar');
+  const agregar = document.getElementById('cil_serial')
+
+  buscar.addEventListener('keyup', (event)=>{
+      agregar.value(buscar.value)
+  })
+  document.addEventListener("keyup",e=>{
+    if(e.target.matches("#buscar")){
+      document.querySelectorAll(".resultado").forEach(cliente=>{
+
+        cliente.textContent.toLowerCase().includes(e.target.value.toLowerCase())
+          ? cliente.classList.remove("filtro") 
+          : cliente.classList.add("filtro")
+      })
+    }
+  })
+
+  function obtenerValorBoton(boton) {
+    const valorBoton = JSON.parse(boton.dataset.array);
+    console.log(valorBoton);
+    cilindro_id=document.getElementById('cil_id');
+    cilindro_id.value=valorBoton[0];
+    cil_serial=document.getElementById('cil_serial');
+    cil_serial.value=valorBoton[1];
+    //nombre=document.getElementById('nombre_cli');
+    //nombre.value=valorBoton[1];
+  }
+  
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+</body>
+</html>
+
